@@ -2,14 +2,33 @@ const express = require('express');
 const Bus = require('../models/Bus');
 const Booking = require('../models/Booking');
 const auth = require('../middleware/auth');
+const { verifyPaymentSignature } = require('../utils/payments');
 
 const router = express.Router();
 
 router.post('/', auth, async (req, res) => {
   try {
-    const { busId, seats, passengerName, passengerPhone } = req.body;
+    const {
+      busId,
+      seats,
+      passengerName,
+      passengerPhone,
+      razorpayOrderId,
+      razorpayPaymentId,
+      razorpaySignature,
+    } = req.body;
+
     if (!busId || !seats?.length || !passengerName || !passengerPhone) {
       return res.status(400).json({ message: 'busId, seats, passengerName and passengerPhone are required.' });
+    }
+
+    const paid = verifyPaymentSignature({
+      orderId: razorpayOrderId,
+      paymentId: razorpayPaymentId,
+      signature: razorpaySignature,
+    });
+    if (!paid) {
+      return res.status(402).json({ message: 'Payment not verified. Complete checkout first.' });
     }
 
     const bus = await Bus.findById(busId);
@@ -35,6 +54,12 @@ router.post('/', auth, async (req, res) => {
       passengerName,
       passengerPhone,
       totalAmount: seats.length * bus.price,
+      payment: {
+        provider: 'razorpay',
+        orderId: razorpayOrderId,
+        paymentId: razorpayPaymentId,
+        status: 'paid',
+      },
     });
 
     const populated = await booking.populate('bus');
