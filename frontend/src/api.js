@@ -35,6 +35,8 @@ export const api = {
   login: (body) => request('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
   buses: (params) => request(`/buses?${new URLSearchParams(params)}`),
   bus: (id) => request(`/buses/${id}`),
+  paymentConfig: () => request('/payments/config'),
+  createOrder: (body) => request('/payments/order', { method: 'POST', body: JSON.stringify(body) }),
   book: (body) => request('/bookings', { method: 'POST', body: JSON.stringify(body) }),
   myBookings: () => request('/bookings/me'),
 };
