@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { api, clearSession, getUser, saveSession } from './api';
 
@@ -73,23 +73,22 @@ function Results() {
   const [buses, setBuses] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const from = params.get('from') || '';
+  const to = params.get('to') || '';
+  const date = params.get('date') || '';
 
-  useMemo(() => {
+  useEffect(() => {
     setLoading(true);
-    api.buses({
-      from: params.get('from') || '',
-      to: params.get('to') || '',
-      date: params.get('date') || '',
-    })
+    api.buses({ from, to, date })
       .then(setBuses)
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
-  }, [params]);
+  }, [from, to, date]);
 
   return (
     <div className="wrap">
-      <h2>{params.get('from')} → {params.get('to')}</h2>
-      <p className="meta">{params.get('date')}</p>
+      <h2>{from} → {to}</h2>
+      <p className="meta">{date}</p>
       {loading && <p className="meta">Loading buses…</p>}
       {error && <p className="alert">{error}</p>}
       <div className="list">
@@ -122,7 +121,7 @@ function Book() {
   const [phone, setPhone] = useState('9876543210');
   const [msg, setMsg] = useState('');
 
-  useMemo(() => {
+  useEffect(() => {
     api.bus(id).then(setBus).catch((e) => setMsg(e.message));
   }, [id]);
 
@@ -245,7 +244,7 @@ function Bookings() {
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
 
-  useMemo(() => {
+  useEffect(() => {
     if (!user) return;
     api.myBookings().then(setItems).catch((e) => setMsg(e.message));
   }, [user]);
