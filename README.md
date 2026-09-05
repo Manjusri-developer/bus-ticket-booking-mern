@@ -12,6 +12,47 @@ Repo: https://github.com/Manjusri-developer/bus-ticket-booking-mern
 
 ---
 
+## How the UI looks
+
+Dark navy canvas, gold buttons, mint-green prices. Fonts: **Instrument Serif** for headings, **DM Sans** for UI text. Cards have soft rounded corners and a faint gold/green glow behind the hero.
+
+| Token | Colour | Used for |
+| --- | --- | --- |
+| Background | `#0b1220` | Page |
+| Card | `#161f33` | Search box, bus rows, seat panel |
+| Gold | `#f5b942` | Brand accent, primary buttons, selected seats |
+| Mint | `#3ee0b3` | Ticket price |
+| Muted | `#9aa6bf` | Labels, times, helper text |
+| Booked seat | `#2a1b22` | Already taken |
+
+### Home — search
+
+Sticky top bar: **GoRide** on the left, Search / My tickets / Login on the right. Large serif headline, then one search card: From, To, Date, gold **Search buses** button. Default route is Bengaluru → Chennai.
+
+![Home search](docs/ui-home.svg)
+
+### Results — bus list
+
+Each bus is a wide card: operator + coach type, departure → arrival, mint price, gold **Select seats**.
+
+![Bus results](docs/ui-results.svg)
+
+### Seat map + pay
+
+8-column seat grid (40 seats). Maroon = booked, gold = your pick, dark = free. Passenger + phone fields, then **Pay ₹…** which opens Razorpay (or a mock confirm if `PAYMENT_MODE=mock`).
+
+![Seat picker](docs/ui-seats.svg)
+
+### Other screens
+
+- **Login / Register** — centered card (~420px), prefilled demo email `demo@goride.test`.
+- **My tickets** — list of confirmed trips with seats, route, amount, Razorpay payment id.
+- Layout is one column under ~800px so it stays readable on a phone.
+
+Live UI after `npm run dev` in `frontend`: http://localhost:5173
+
+---
+
 ## How it works
 
 ```
