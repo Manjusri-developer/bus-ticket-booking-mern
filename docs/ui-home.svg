@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1408"/>
+      <stop offset="40%" stop-color="#0b1220"/>
+      <stop offset="100%" stop-color="#0b1220"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" rx="24" fill="url(#bg)"/>
+  <circle cx="80" cy="40" r="180" fill="#f5b942" opacity="0.12"/>
+  <circle cx="900" cy="80" r="160" fill="#3ee0b3" opacity="0.08"/>
+  <rect x="28" y="22" width="904" height="52" rx="14" fill="#121a2b"/>
+  <text x="48" y="55" font-family="Georgia, serif" font-size="22" fill="#f4f6fb">Go<tspan fill="#f5b942">Ride</tspan></text>
+  <text x="620" y="54" font-family="Arial" font-size="14" fill="#9aa6bf">Search    My tickets</text>
+  <rect x="800" y="34" width="110" height="28" rx="8" fill="#f5b942"/>
+  <text x="830" y="53" font-family="Arial" font-size="13" font-weight="700" fill="#1a1406">Login</text>
+  <text x="48" y="150" font-family="Georgia, serif" font-size="40" fill="#f4f6fb">Book intercity buses</text>
+  <text x="48" y="198" font-family="Georgia, serif" font-size="40" fill="#f4f6fb">without the noise.</text>
+  <text x="48" y="240" font-family="Arial" font-size="16" fill="#9aa6bf">Search routes, pick seats, pay with Razorpay.</text>
+  <rect x="48" y="280" width="864" height="120" rx="20" fill="#161f33" stroke="rgba(255,255,255,0.08)"/>
+  <text x="72" y="318" font-family="Arial" font-size="11" fill="#9aa6bf">FROM</text>
+  <rect x="72" y="328" width="180" height="44" rx="10" fill="#0d1526"/>
+  <text x="86" y="356" font-family="Arial" font-size="15" fill="#f4f6fb">Bengaluru</text>
+  <text x="280" y="318" font-family="Arial" font-size="11" fill="#9aa6bf">TO</text>
+  <rect x="280" y="328" width="180" height="44" rx="10" fill="#0d1526"/>
+  <text x="294" y="356" font-family="Arial" font-size="15" fill="#f4f6fb">Chennai</text>
+  <text x="488" y="318" font-family="Arial" font-size="11" fill="#9aa6bf">DATE</text>
+  <rect x="488" y="328" width="160" height="44" rx="10" fill="#0d1526"/>
+  <text x="502" y="356" font-family="Arial" font-size="15" fill="#f4f6fb">2026-09-06</text>
+  <rect x="680" y="328" width="200" height="44" rx="10" fill="#f5b942"/>
+  <text x="722" y="356" font-family="Arial" font-size="15" font-weight="700" fill="#1a1406">Search buses</text>
+  <text x="48" y="450" font-family="Arial" font-size="13" fill="#9aa6bf">Seeded: Bengaluru → Chennai / Hyderabad / Mysuru</text>
+</svg>
