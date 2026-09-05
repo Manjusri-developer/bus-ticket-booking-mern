@@ -9,6 +9,12 @@ const bookingSchema = new mongoose.Schema(
     passengerPhone: { type: String, required: true },
     totalAmount: { type: Number, required: true },
     status: { type: String, enum: ['confirmed', 'cancelled'], default: 'confirmed' },
+    payment: {
+      provider: { type: String, default: 'razorpay' },
+      orderId: String,
+      paymentId: String,
+      status: { type: String, enum: ['paid', 'failed'], default: 'paid' },
+    },
   },
   { timestamps: true }
 );
