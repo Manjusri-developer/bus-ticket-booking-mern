@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { api, clearSession, getUser, saveSession } from './api';
+import { openCheckout } from './pay';
 
 function Navbar() {
   const user = getUser();
@@ -46,7 +47,7 @@ function Home() {
     <div className="wrap">
       <section className="hero">
         <h1>Book intercity buses without the noise.</h1>
-        <p>Search routes, pick seats, and confirm in under a minute. Sample MERN app with a 2026-style dark UI.</p>
+        <p>Search routes, pick seats, and pay with Razorpay. Sample MERN app with a 2026-style dark UI.</p>
       </section>
       <form className="card search" onSubmit={search}>
         <div>
@@ -120,6 +121,7 @@ function Book() {
   const [name, setName] = useState(user?.name || '');
   const [phone, setPhone] = useState('9876543210');
   const [msg, setMsg] = useState('');
+  const [paying, setPaying] = useState(false);
 
   useEffect(() => {
     api.bus(id).then(setBus).catch((e) => setMsg(e.message));
@@ -132,16 +134,38 @@ function Book() {
 
   async function confirm() {
     if (!user) return navigate('/login');
+    setMsg('');
+    setPaying(true);
     try {
-      const booking = await api.book({
-        busId: id,
-        seats: picked,
-        passengerName: name,
-        passengerPhone: phone,
+      const order = await api.createOrder({ busId: id, seats: picked });
+      openCheckout({
+        order,
+        user,
+        async onSuccess(payment) {
+          try {
+            const booking = await api.book({
+              busId: id,
+              seats: picked,
+              passengerName: name,
+              passengerPhone: phone,
+              razorpayOrderId: payment.razorpay_order_id,
+              razorpayPaymentId: payment.razorpay_payment_id,
+              razorpaySignature: payment.razorpay_signature,
+            });
+            navigate('/bookings', { state: { justBooked: booking._id } });
+          } catch (e) {
+            setMsg(e.message);
+            setPaying(false);
+          }
+        },
+        onDismiss(reason) {
+          setPaying(false);
+          if (reason) setMsg(String(reason));
+        },
       });
-      navigate('/bookings', { state: { justBooked: booking._id } });
     } catch (e) {
       setMsg(e.message);
+      setPaying(false);
     }
   }
 
@@ -179,8 +203,8 @@ function Book() {
             <label>Phone</label>
             <input value={phone} onChange={(e) => setPhone(e.target.value)} />
           </div>
-          <button className="btn" style={{ alignSelf: 'end' }} disabled={!picked.length} onClick={confirm}>
-            Pay ₹{picked.length * bus.price || 0}
+          <button className="btn" style={{ alignSelf: 'end' }} disabled={!picked.length || paying} onClick={confirm}>
+            {paying ? 'Paying…' : `Pay ₹${picked.length * bus.price || 0}`}
           </button>
         </div>
         {msg && <p className="alert">{msg}</p>}
@@ -260,7 +284,7 @@ function Bookings() {
           <article className="card" key={b._id}>
             <h3>{b.bus?.operator} · seats {b.seats.join(', ')}</h3>
             <p className="meta">{b.bus?.from} → {b.bus?.to} · {b.bus?.date} · {b.passengerName}</p>
-            <p className="ok">Confirmed · ₹{b.totalAmount}</p>
+            <p className="ok">Paid · ₹{b.totalAmount} · {b.payment?.paymentId || 'razorpay'}</p>
           </article>
         ))}
         {!items.length && <p className="meta">No bookings yet.</p>}
