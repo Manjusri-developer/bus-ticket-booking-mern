@@ -7,10 +7,11 @@ export function openCheckout({ order, user, onSuccess, onDismiss }) {
       onDismiss?.();
       return;
     }
+    const paymentId = `pay_mock_${Date.now()}`;
     onSuccess({
       razorpay_order_id: order.orderId,
-      razorpay_payment_id: `pay_mock_${Date.now()}`,
-      razorpay_signature: `mock_sig_${order.orderId}_pay_mock_${Date.now()}`,
+      razorpay_payment_id: paymentId,
+      razorpay_signature: `mock_sig_${order.orderId}_${paymentId}`,
     });
     return;
   }
