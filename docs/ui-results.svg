@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" rx="24" fill="#0b1220"/>
+  <rect x="28" y="22" width="904" height="52" rx="14" fill="#121a2b"/>
+  <text x="48" y="55" font-family="Georgia, serif" font-size="22" fill="#f4f6fb">Go<tspan fill="#f5b942">Ride</tspan></text>
+  <text x="48" y="120" font-family="Arial" font-size="26" font-weight="700" fill="#f4f6fb">Bengaluru → Chennai</text>
+  <text x="48" y="148" font-family="Arial" font-size="14" fill="#9aa6bf">2026-09-06</text>
+  <rect x="48" y="176" width="864" height="96" rx="18" fill="#161f33"/>
+  <text x="72" y="214" font-family="Arial" font-size="18" font-weight="700" fill="#f4f6fb">RedLine Travels</text>
+  <text x="72" y="238" font-family="Arial" font-size="13" fill="#9aa6bf">AC Sleeper · 6h 30m</text>
+  <text x="430" y="224" font-family="Arial" font-size="16" fill="#f4f6fb">21:30 → 04:00</text>
+  <text x="640" y="226" font-family="Arial" font-size="22" font-weight="700" fill="#3ee0b3">₹899</text>
+  <rect x="760" y="204" width="128" height="40" rx="10" fill="#f5b942"/>
+  <text x="778" y="230" font-family="Arial" font-size="13" font-weight="700" fill="#1a1406">Select seats</text>
+  <rect x="48" y="288" width="864" height="96" rx="18" fill="#161f33"/>
+  <text x="72" y="326" font-family="Arial" font-size="18" font-weight="700" fill="#f4f6fb">SkyWay Express</text>
+  <text x="72" y="350" font-family="Arial" font-size="13" fill="#9aa6bf">Volvo AC · 6h 30m</text>
+  <text x="430" y="336" font-family="Arial" font-size="16" fill="#f4f6fb">06:15 → 12:45</text>
+  <text x="640" y="338" font-family="Arial" font-size="22" font-weight="700" fill="#3ee0b3">₹649</text>
+  <rect x="760" y="316" width="128" height="40" rx="10" fill="#f5b942"/>
+  <text x="778" y="342" font-family="Arial" font-size="13" font-weight="700" fill="#1a1406">Select seats</text>
+  <rect x="48" y="400" width="864" height="96" rx="18" fill="#161f33"/>
+  <text x="72" y="438" font-family="Arial" font-size="18" font-weight="700" fill="#f4f6fb">Coastal Riders</text>
+  <text x="72" y="462" font-family="Arial" font-size="13" fill="#9aa6bf">Non-AC Seater · 6h 45m</text>
+  <text x="430" y="448" font-family="Arial" font-size="16" fill="#f4f6fb">21:30 → 04:00</text>
+  <text x="640" y="450" font-family="Arial" font-size="22" font-weight="700" fill="#3ee0b3">₹499</text>
+  <rect x="760" y="428" width="128" height="40" rx="10" fill="#f5b942"/>
+  <text x="778" y="454" font-family="Arial" font-size="13" font-weight="700" fill="#1a1406">Select seats</text>
+</svg>
