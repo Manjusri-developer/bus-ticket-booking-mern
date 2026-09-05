@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" rx="24" fill="#0b1220"/>
+  <rect x="28" y="22" width="904" height="52" rx="14" fill="#121a2b"/>
+  <text x="48" y="55" font-family="Georgia, serif" font-size="22" fill="#f4f6fb">Go<tspan fill="#f5b942">Ride</tspan></text>
+  <rect x="48" y="100" width="864" height="400" rx="20" fill="#161f33"/>
+  <text x="72" y="142" font-family="Arial" font-size="22" font-weight="700" fill="#f4f6fb">RedLine Travels</text>
+  <text x="72" y="168" font-family="Arial" font-size="14" fill="#9aa6bf">Bengaluru → Chennai · 2026-09-06 · 21:30</text>
+  <g font-family="Arial" font-size="12">
+    <rect x="72" y="196" width="44" height="44" rx="10" fill="#2a1b22"/>
+    <text x="88" y="223" fill="#6d4b55">1</text>
+    <rect x="124" y="196" width="44" height="44" rx="10" fill="#2a1b22"/>
+    <text x="140" y="223" fill="#6d4b55">2</text>
+    <rect x="176" y="196" width="44" height="44" rx="10" fill="#0d1526" stroke="#2a3550"/>
+    <text x="192" y="223" fill="#9aa6bf">3</text>
+    <rect x="228" y="196" width="44" height="44" rx="10" fill="#f5b942"/>
+    <text x="244" y="223" fill="#1a1406" font-weight="700">4</text>
+    <rect x="280" y="196" width="44" height="44" rx="10" fill="#f5b942"/>
+    <text x="296" y="223" fill="#1a1406" font-weight="700">5</text>
+    <rect x="332" y="196" width="44" height="44" rx="10" fill="#0d1526" stroke="#2a3550"/>
+    <text x="348" y="223" fill="#9aa6bf">6</text>
+    <rect x="384" y="196" width="44" height="44" rx="10" fill="#0d1526" stroke="#2a3550"/>
+    <text x="400" y="223" fill="#9aa6bf">7</text>
+    <rect x="436" y="196" width="44" height="44" rx="10" fill="#0d1526" stroke="#2a3550"/>
+    <text x="452" y="223" fill="#9aa6bf">8</text>
+    <rect x="72" y="248" width="44" height="44" rx="10" fill="#0d1526" stroke="#2a3550"/>
+    <text x="88" y="275" fill="#9aa6bf">9</text>
+    <rect x="124" y="248" width="44" height="44" rx="10" fill="#0d1526" stroke="#2a3550"/>
+    <text x="136" y="275" fill="#9aa6bf">10</text>
+    <rect x="176" y="248" width="44" height="44" rx="10" fill="#2a1b22"/>
+    <text x="188" y="275" fill="#6d4b55">12</text>
+    <rect x="228" y="248" width="44" height="44" rx="10" fill="#0d1526" stroke="#2a3550"/>
+    <text x="240" y="275" fill="#9aa6bf">13</text>
+    <rect x="280" y="248" width="44" height="44" rx="10" fill="#0d1526" stroke="#2a3550"/>
+    <text x="292" y="275" fill="#9aa6bf">14</text>
+    <rect x="332" y="248" width="44" height="44" rx="10" fill="#0d1526" stroke="#2a3550"/>
+    <text x="344" y="275" fill="#9aa6bf">15</text>
+    <rect x="384" y="248" width="44" height="44" rx="10" fill="#0d1526" stroke="#2a3550"/>
+    <text x="396" y="275" fill="#9aa6bf">16</text>
+    <rect x="436" y="248" width="44" height="44" rx="10" fill="#0d1526" stroke="#2a3550"/>
+    <text x="448" y="275" fill="#9aa6bf">17</text>
+  </g>
+  <text x="72" y="330" font-family="Arial" font-size="12" fill="#9aa6bf">maroon = booked · gold = selected · dark = available</text>
+  <text x="72" y="372" font-family="Arial" font-size="11" fill="#9aa6bf">PASSENGER</text>
+  <rect x="72" y="380" width="240" height="40" rx="10" fill="#0d1526"/>
+  <text x="86" y="406" font-family="Arial" font-size="14" fill="#f4f6fb">Traveller</text>
+  <text x="332" y="372" font-family="Arial" font-size="11" fill="#9aa6bf">PHONE</text>
+  <rect x="332" y="380" width="200" height="40" rx="10" fill="#0d1526"/>
+  <text x="346" y="406" font-family="Arial" font-size="14" fill="#f4f6fb">9876543210</text>
+  <rect x="560" y="380" width="180" height="40" rx="10" fill="#f5b942"/>
+  <text x="600" y="406" font-family="Arial" font-size="14" font-weight="700" fill="#1a1406">Pay ₹1798</text>
+</svg>
