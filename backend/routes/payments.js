@@ -1,36 +1,16 @@
 const express = require('express');
-const crypto = require('crypto');
 const Razorpay = require('razorpay');
 const Bus = require('../models/Bus');
 const auth = require('../middleware/auth');
+const { paymentMode } = require('../utils/payments');
 
 const router = express.Router();
-
-function paymentMode() {
-  const mode = (process.env.PAYMENT_MODE || 'mock').toLowerCase();
-  const hasKeys = Boolean(process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET);
-  if (mode === 'razorpay' && hasKeys) return 'razorpay';
-  return 'mock';
-}
 
 function getRazorpay() {
   return new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
-}
-
-function verifySignature({ orderId, paymentId, signature }) {
-  const mode = paymentMode();
-  if (mode === 'mock') {
-    return signature === `mock_sig_${orderId}_${paymentId}`;
-  }
-  const body = `${orderId}|${paymentId}`;
-  const expected = crypto
-    .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
-    .update(body)
-    .digest('hex');
-  return expected === signature;
 }
 
 router.get('/config', (_req, res) => {
@@ -89,6 +69,4 @@ router.post('/order', auth, async (req, res) => {
   }
 });
 
-router.verifySignature = verifySignature;
-router.paymentMode = paymentMode;
 module.exports = router;
