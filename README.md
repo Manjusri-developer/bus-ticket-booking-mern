@@ -5,7 +5,8 @@ Sample full-stack bus booking app (2026 stack):
 - **MongoDB** + Mongoose 8
 - **Express** REST API + JWT auth
 - **React 19** + **Vite 6** + React Router 7
-- Dark, readable UI (custom CSS, no extra design system to install)
+- **Razorpay** Checkout (real keys) or built-in **mock** checkout
+- Dark, readable UI
 
 Repo: https://github.com/Manjusri-developer/bus-ticket-booking-mern
 
@@ -16,27 +17,32 @@ Repo: https://github.com/Manjusri-developer/bus-ticket-booking-mern
 ```
 Browser (Vite :5173)
    → /api/* proxied to Express :5000
-        → MongoDB (local or Atlas)
+        → MongoDB
+        → Razorpay (when PAYMENT_MODE=razorpay)
 ```
 
-1. User searches **from / to / date** on the home page.
-2. Frontend calls `GET /api/buses?from=&to=&date=`.
-3. User opens a bus and picks available seats.
-4. After login/register, frontend sends `POST /api/bookings` with a JWT.
-5. Server checks that seats are free, stores a booking, and marks those seats booked.
-6. `GET /api/bookings/me` lists that user's tickets.
+1. Search **from / to / date**.
+2. Pick seats.
+3. Login. Click **Pay**.
+4. Frontend calls `POST /api/payments/order` (amount in paise).
+5. Razorpay Checkout opens (or a mock confirm dialog if no keys).
+6. Frontend sends payment ids + HMAC signature to `POST /api/bookings`.
+7. Server verifies the signature, then reserves seats.
+8. Ticket appears under **My tickets** with the payment id.
 
 ### API map
 
 | Method | Path | Auth | Purpose |
 | --- | --- | --- | --- |
-| GET | `/api/health` | no | Liveness check |
+| GET | `/api/health` | no | Liveness |
 | POST | `/api/auth/register` | no | Create user |
-| POST | `/api/auth/login` | no | Get JWT |
-| GET | `/api/buses` | no | Search buses |
-| GET | `/api/buses/:id` | no | Bus + booked seats |
-| POST | `/api/bookings` | Bearer JWT | Create booking |
-| GET | `/api/bookings/me` | Bearer JWT | My bookings |
+| POST | `/api/auth/login` | no | JWT |
+| GET | `/api/buses` | no | Search |
+| GET | `/api/buses/:id` | no | Bus + seats |
+| GET | `/api/payments/config` | no | `mock` or `razorpay` + public key |
+| POST | `/api/payments/order` | JWT | Create Razorpay/mock order |
+| POST | `/api/bookings` | JWT | Verify payment + book |
+| GET | `/api/bookings/me` | JWT | My tickets |
 
 ---
 
@@ -45,7 +51,8 @@ Browser (Vite :5173)
 ### Prerequisites
 
 - Node.js 20 or 22 LTS
-- MongoDB running locally (`mongodb://127.0.0.1:27017`) **or** a MongoDB Atlas URI
+- MongoDB local or Atlas
+- Optional: [Razorpay test keys](https://dashboard.razorpay.com/app/keys)
 
 ### 1. Clone
 
@@ -59,20 +66,24 @@ cd bus-ticket-booking-mern
 ```bash
 cd backend
 cp .env.example .env
-# edit .env if you use Atlas instead of local Mongo
 npm install
 npm run seed
 npm run dev
 ```
 
-API: http://localhost:5000/api/health
+Default `.env` uses **mock payments** so the app runs with zero Razorpay setup.
 
-`npm run seed` loads sample buses for **today + next 2 days** on routes:
+To use the real gateway:
 
-- Bengaluru → Chennai / Hyderabad / Mysuru
-- Chennai → Bengaluru
+```
+PAYMENT_MODE=razorpay
+RAZORPAY_KEY_ID=rzp_test_xxxx
+RAZORPAY_KEY_SECRET=xxxx
+```
 
-### 3. Frontend (new terminal)
+Restart the API. UI will open official Razorpay Checkout. Test cards are in the Razorpay dashboard docs (success: `4111 1111 1111 1111`).
+
+### 3. Frontend
 
 ```bash
 cd frontend
@@ -80,33 +91,17 @@ npm install
 npm run dev
 ```
 
-UI: http://localhost:5173
-
-Vite proxies `/api` to port 5000, so you do not need CORS gymnastics in local dev.
-
-### Demo login flow
-
-1. Open http://localhost:5173/login
-2. Register (or login). Sample fields are prefilled.
-3. Search **Bengaluru → Chennai** for tomorrow.
-4. Select seats and confirm.
-5. Open **My tickets**.
+http://localhost:5173
 
 ---
 
 ## Test with Postman
 
-Base URL: `http://localhost:5000`
+Base: `http://localhost:5000`
 
-### 0. Health
+### Auth
 
-- **GET** `{{base}}/api/health`
-- Expect: `{ "ok": true, ... }`
-
-### 1. Register
-
-- **POST** `{{base}}/api/auth/register`
-- Body → raw JSON:
+**POST** `/api/auth/register`
 
 ```json
 {
@@ -116,84 +111,57 @@ Base URL: `http://localhost:5000`
 }
 ```
 
-Save `token` from the response.
+Save `token`. Use Bearer Token on the next calls.
 
-### 2. Login
+### Create order
 
-- **POST** `{{base}}/api/auth/login`
-- Body:
+**POST** `/api/payments/order`
 
 ```json
 {
-  "email": "demo@goride.test",
-  "password": "secret12"
+  "busId": "PASTE_BUS_ID",
+  "seats": [7, 8]
 }
 ```
 
-### 3. Search buses
+Response includes `orderId`, `amount` (paise), `mode`.
 
-- **GET** `{{base}}/api/buses?from=Bengaluru&to=Chennai&date=2026-09-06`
-- Change `date` to today or tomorrow (seed covers 3 days).
-- Copy a bus `_id`.
+### Book after mock payment
 
-### 4. Get one bus
+If `PAYMENT_MODE=mock` (default):
 
-- **GET** `{{base}}/api/buses/<BUS_ID>`
-
-### 5. Book seats (auth)
-
-Postman: Authorization → Bearer Token → paste JWT.
-
-- **POST** `{{base}}/api/bookings`
-- Body:
+**POST** `/api/bookings`
 
 ```json
 {
   "busId": "PASTE_BUS_ID",
   "seats": [7, 8],
   "passengerName": "Demo User",
-  "passengerPhone": "9876543210"
+  "passengerPhone": "9876543210",
+  "razorpayOrderId": "order_mock_123",
+  "razorpayPaymentId": "pay_mock_123",
+  "razorpaySignature": "mock_sig_order_mock_123_pay_mock_123"
 }
 ```
 
-Expect `201` and `status: "confirmed"`. Booking the same seats again returns `409`.
+Signature format for mock: `mock_sig_<orderId>_<paymentId>`.
 
-### 6. My bookings
+Without a valid signature the API returns **402**.
 
-- **GET** `{{base}}/api/bookings/me`
-- Same Bearer token.
+### Real Razorpay (Postman)
 
-### Postman collection (quick import)
-
-Create an environment:
-
-- `base` = `http://localhost:5000`
-- `token` = (set after login with a Tests script if you want)
-
-Optional test script on Login:
-
-```javascript
-const json = pm.response.json();
-if (json.token) pm.environment.set('token', json.token);
-```
-
-Then set collection auth to Bearer `{{token}}`.
+1. Create order as above.
+2. Pay that `order_id` in Checkout (or Razorpay test tools).
+3. Copy `razorpay_payment_id` and `razorpay_signature` from the Checkout success payload.
+4. POST `/api/bookings` with those three fields. Server checks HMAC-SHA256 of `orderId|paymentId` with `RAZORPAY_KEY_SECRET`.
 
 ---
 
-## Project layout
+## Payment files
 
 ```
-backend/
-  server.js           Express app + Mongo connect
-  seed.js             Sample buses
-  models/             User, Bus, Booking
-  routes/             auth, buses, bookings
-  middleware/auth.js  JWT guard
-frontend/
-  src/App.jsx         Pages + routing
-  src/api.js          fetch helper
-  src/index.css       UI
+backend/routes/payments.js     create order + public key
+backend/utils/payments.js      HMAC verify + mock mode
+backend/routes/bookings.js     refuses unpaid bookings
+frontend/src/pay.js             Razorpay.js or mock dialog
 ```
-
-Code is intentionally small and commented by structure so it is easy to read and extend (payments, admin panel, cancellation).
